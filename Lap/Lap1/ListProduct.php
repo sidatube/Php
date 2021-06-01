@@ -73,19 +73,19 @@
                 </div>
                 <div class="modal-body">
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Tên</span>
+                        <span class="input-group-text">Tên</span>
                         <input type="text" class="form-control" placeholder="Tên" aria-label="Tên" aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Giá</span>
+                        <span class="input-group-text" >Giá</span>
                         <input type="text" class="form-control" placeholder="Giá" aria-label="Giá" aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Mô tả</span>
+                        <span class="input-group-text">Mô tả</span>
                         <input type="text" class="form-control" placeholder="Mô tả" aria-label="Mô tả" aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Nhà cung cấp</span>
+                        <span class="input-group-text">Nhà cung cấp</span>
                         <input type="text" class="form-control" placeholder="Nhà cung cấp" aria-label="Nhà cung cấp" aria-describedby="basic-addon1">
                     </div>
 
@@ -161,5 +161,34 @@
     <?php
     }
     ?>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary float-end me-5"  data-bs-toggle="modal" data-bs-target="#exampleModal2">
+        Add category
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel2">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">Tên category</span>
+                        <input type="text" class="form-control" placeholder="Tên" aria-label="Tên" aria-describedby="basic-addon1">
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Thêm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
