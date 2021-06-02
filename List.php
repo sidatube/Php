@@ -8,36 +8,37 @@
 <body>
 <h1>Danh Sách sinh viên</h1>
 <?php
-    $dshs = [];
-    $dshs[]= [
-        "Name"=> "Nguyễn Văn An",
-        "Age"=>"18"
-    ];
-    $dshs[]= [
-        "Name"=> "Nguyễn Văn Bê",
-        "Age"=>"19"
-    ];
-    $dshs[]=  [
-        "Name"=> "Nguyễn Văn Cê",
-        "Age"=>"21"
-    ];
-    $dshs[]= [
-        "Name"=> "Nguyễn Văn Dê",
-        "Age"=>"20"
-    ];
+   //lây đs từ database
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $db = "t2008m_php";
+    // creat connect ;
+    $conn = new mysqli($servername,$username,$password,$db);
+// kiem tra ket noio
+    if ($conn->connect_error){
+        die("Connect error");
+    }
+    $sql_txt = "select * from sinhviens";
+    $rs = $conn->query($sql_txt);
+    $dssv = [];
+    if($rs->num_rows>0){
+        while ($row =$rs->fetch_assoc()){
+            $dssv[] = $row;
+        }
+    }
 
 ?>
 <ul>
     <?php
-    foreach ($dshs as $hs){?>
-        <li>
-            <?php
-            echo $hs["Name"]." -- ".$hs["Age"];
-            ?>
-        </li>
-    <?php }
+    foreach ($dssv as $ds){
+        ?>
+    <li><a href="Chitiet.php?id=<?php echo $ds["id"] ?>"><?php echo $ds["name"]."--".$ds["age"] ?></a></li>
+    <?php
+    }
     ?>
 </ul>
+
 <a href="index.php">Quay về tranh chủ</a>
 </body>
 </html>
