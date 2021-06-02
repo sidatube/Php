@@ -34,6 +34,7 @@
     foreach ($dssv as $ds){
         ?>
     <li><a href="Chitiet.php?id=<?php echo $ds["id"] ?>"><?php echo $ds["name"]."--".$ds["age"] ?></a></li>
+        <a href="edit.php?id=<?php echo $ds["id"];?>">Sửa</a><a href="delete.php?id=<?php echo $ds["id"];?>">Xóa</a></li>
     <?php
     }
     ?>
