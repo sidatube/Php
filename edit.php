@@ -32,7 +32,7 @@ if($rs->num_rows>0){
 }
 if($sv == null) header("location: list.php");
 ?>
-<form action="capnhat.php"  method="POST">
+<form action="update.php"  method="POST">
     <input type="hidden" name="id" value="<?php echo $sv["id"];?>"/>
     <input type="text" name="name" value="<?php echo $sv["name"];?>" placeholder="Name.."/>
     <input type="number" name="age" value="<?php echo $sv["age"];?>" placeholder="Age.."/>

@@ -11,56 +11,36 @@
 <body>
     <h1>Danh sách sản phẩm</h1>
     <?php
-    $category=[];
-    $category[]=[
-            "id"=>1,
-        "name"=>"Vật liệu"
-    ];
-    $category[]=[
-      "id"=>2,
-        "name"=>"Máy móc"
-    ];
+    $servername ="localhost";
+    $username = "root";
+    $password="";
+    $db="t2008m_php";
+    $conn=new mysqli($servername,$username,$password,$db);
+    if ($conn->connect_error){
+        die("Connect error...");
+    }
+    $sql_pro = "select * from products";
+    $sql_cate = "select * from procategory";
+    $rs= $conn->query($sql_pro);
+    $rs2= $conn->query($sql_cate);
     $product = [];
-    $product[]=[
-        "id"=> 1,
-        "name"=>"Bức tường siêu phẳng",
-        "gia"=>"0.00",
-        "mota"=>"Bức tường này có giá free nên chúng tôi sẽ tính phí ship do nó quá nặng so với sản phẩm thông thường",
-        "ncc"=>"Nhà cung cấp Giấu Tên"
-    ];
-    $product[]=[
-        "id"=> 2,
-        "name"=>"Bức tường không cong",
-        "gia"=>"0.00",
-        "mota"=>"Bức tường này có giá free nên chúng tôi sẽ tính phí ship do nó quá nặng so với sản phẩm thông thường",
-        "ncc"=>"Nhà cung cấp Giấu Tên"
-    ];
-    $product[]=[
-        "id"=> 3,
-        "name"=>"Bức tường phake",
-        "gia"=>"0.00",
-        "mota"=>"Bức tường này có giá free nên chúng tôi sẽ tính phí ship do nó quá nặng so với sản phẩm thông thường",
-        "ncc"=>"Nhà cung cấp Giấu Tên"
-    ];
-    $product[]=[
-        "id"=> 4,
-        "name"=>"Bức tường siêu cong",
-        "gia"=>"0.00",
-        "mota"=>"Bức tường này có giá free nên chúng tôi sẽ tính phí ship do nó quá nặng so với sản phẩm thông thường",
-        "ncc"=>"Nhà cung cấp Giấu Tên"
-    ];
-    $product[]=[
-        "id"=> 5,
-        "name"=>"Máy phá nhà",
-        "gia"=>"300.000.000.00",
-        "mota"=>"Đây là cỗ máy có thể di chuyển như xe tăng nên bạn cần đến nhận hàng hoặc chịu phí ship =100% giá sản phẩm",
-        "ncc"=>"Nhà cung cấp Không để lại tên"
-    ];
+    if ($rs->num_rows){
+        while ($row = $rs->fetch_assoc()){
+            $product[]=$row;
+        }
+    }
+    $category=[];
+    if ($rs2->num_rows){
+        while ($row = $rs2->fetch_assoc()){
+            $category[]=$row;
+        }
+    }
 
     ?>
+<!--    add product-->
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary float-end me-5"  data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Launch demo modal
+        Thêm sản phẩm
     </button>
 
     <!-- Modal -->
@@ -71,29 +51,35 @@
                     <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <form action="thempro.php" method="post">
                 <div class="modal-body">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Tên</span>
-                        <input type="text" class="form-control" placeholder="Tên" aria-label="Tên" aria-describedby="basic-addon1">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" >Giá</span>
-                        <input type="text" class="form-control" placeholder="Giá" aria-label="Giá" aria-describedby="basic-addon1">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Mô tả</span>
-                        <input type="text" class="form-control" placeholder="Mô tả" aria-label="Mô tả" aria-describedby="basic-addon1">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">Nhà cung cấp</span>
-                        <input type="text" class="form-control" placeholder="Nhà cung cấp" aria-label="Nhà cung cấp" aria-describedby="basic-addon1">
-                    </div>
+
+                        <input type="hidden" name="id" value=""/>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Tên</span>
+                            <input type="text" name="name" class="form-control" placeholder="Tên" aria-label="Tên" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" >Giá</span>
+                            <input type="text" name="gia" class="form-control" placeholder="Giá" aria-label="Giá" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Mô tả</span>
+                            <input type="text" name="mota" class="form-control" placeholder="Mô tả" aria-label="Mô tả" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Nhà cung cấp</span>
+                            <input type="text" name="ncc" class="form-control" placeholder="Nhà cung cấp" aria-label="Nhà cung cấp" aria-describedby="basic-addon1">
+                        </div>
+
+
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Thêm</button>
+                    <button type="submit" class="btn btn-primary">Thêm</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -101,7 +87,7 @@
     <table class="table" style="width: 80%">
         <thead>
         <tr>
-            <th scope="col">#</th>
+            <th scope="col">id</th>
             <th scope="col">Tên</th>
             <th scope="col">Giá</th>
             <th scope="col" colspan="2">Mô tả</th>
@@ -110,41 +96,85 @@
 
         </tr>
         </thead>
+
+
+
         <tbody>
             <?php
-                foreach ($product as $p){
-
+                foreach ($product as $pro){
                     ?>
             <tr>
-                    <th scope="row"><?php
-
-                        echo $p["id"] ;
-
-                    ?></th>
-                    <td><?php
-                        echo $p["name"]
+                    <td ><?php
+                        echo $pro["name"] ;
                     ?></td>
                     <td><?php
-                        echo $p["gia"]." VND"
+                        echo $pro["name"]
+                    ?></td>
+                    <td><?php
+                        echo $pro["gia"]." VND"
                     ?></td>
                     <td colspan="2"><?php
-                        echo $p["mota"]
+                        echo $pro["mota"]
                     ?></td>
                     <td><?php
-                        echo $p["ncc"]
+                        echo $pro["ncc"]
                     ?></td>
                     <td>
-                        <button type="button" class="btn btn-info">Edit</button>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary"   data-bs-toggle="modal" data-bs-target="#edit<?php echo $pro["id"]?>">
+                           Edit
+                        </button>
+                        <!-- Modal -->
+
+                        <div class="modal fade" id="edit<?php echo $pro["id"]?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Sửa thông tin</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="editpro.php" method="post">
+                                        <div class="modal-body" id="pasetin">
+                                            <input type="hidden" name="id" value="<?php echo $pro["id"] ?>"/>
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text" >Tên</span>
+                                                <input type="text" name="name" class="form-control" value="<?php echo $pro["name"] ?>" aria-label="Tên" aria-describedby="basic-addon1">
+                                            </div>
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text" >Giá</span>
+                                                <input type="text" name="gia" class="form-control" value="<?php echo $pro["gia"] ?>" aria-label="Giá" aria-describedby="basic-addon1">
+                                            </div>
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">Mô tả</span>
+                                                <input type="text" name="mota" class="form-control" value="<?php echo $pro["mota"] ?>" aria-label="Mô tả" aria-describedby="basic-addon1">
+                                            </div>
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">Nhà cung cấp</span>
+                                                <input type="text" name="ncc" class="form-control" value="<?php echo $pro["ncc"] ?>" aria-label="Nhà cung cấp" aria-describedby="basic-addon1">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Edit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 <td>
-                        <button type="button" class="btn btn-warning">Delete</button>
-                    </td>
+                    <form action="delete.php" method="post">
+                        <input type="hidden" name="id" value="<?php echo $pro["id"] ?>">
+                        <button type="submit" class="btn btn-warning">Delete</button></form>
+                </td>
             </tr>
             <?php
 
                 }
             ?>
+
         </tbody>
+
     </table>
     <h1>Category</h1>
     <?php
@@ -161,6 +191,7 @@
     <?php
     }
     ?>
+<!--    category-->
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary float-end me-5"  data-bs-toggle="modal" data-bs-target="#exampleModal2">
         Add category
@@ -174,18 +205,19 @@
                     <h5 class="modal-title" id="exampleModalLabel2">Modal title</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <form action="themcate.php" method="post">
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <span class="input-group-text">Tên category</span>
-                        <input type="text" class="form-control" placeholder="Tên" aria-label="Tên" aria-describedby="basic-addon1">
+                        <input type="text" name="name" class="form-control" placeholder="Tên" aria-label="Tên" aria-describedby="basic-addon1">
                     </div>
-
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Thêm</button>
+                    <button type="submit" class="btn btn-primary">Thêm</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
