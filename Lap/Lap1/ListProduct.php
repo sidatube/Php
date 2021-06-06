@@ -1,3 +1,6 @@
+<?php include_once "session.php" ?>
+<?php include_once "database.php" ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,34 +10,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-</head>
 <body>
     <h1>Danh sách sản phẩm</h1>
     <?php
-    $servername ="localhost";
-    $username = "root";
-    $password="";
-    $db="t2008m_php";
-    $conn=new mysqli($servername,$username,$password,$db);
-    if ($conn->connect_error){
-        die("Connect error...");
-    }
     $sql_pro = "select * from products";
     $sql_cate = "select * from procategory";
-    $rs= $conn->query($sql_pro);
-    $rs2= $conn->query($sql_cate);
-    $product = [];
-    if ($rs->num_rows){
-        while ($row = $rs->fetch_assoc()){
-            $product[]=$row;
-        }
-    }
-    $category=[];
-    if ($rs2->num_rows){
-        while ($row = $rs2->fetch_assoc()){
-            $category[]=$row;
-        }
-    }
+
+    $product = queryDB($sql_pro);
+
+    $category=queryDB($sql_cate);
+
 
     ?>
 <!--    add product-->
@@ -83,7 +68,74 @@
             </div>
         </div>
     </div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary float-end me-5" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Giỏ hàng
+    </button>
 
+    <!-- Modal -->
+
+
+    <div class="modal fade" id="staticBackdrop"  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Giỏ hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php
+                    $cart=$_SESSION["Cart"];
+                    ?>
+                    <table class="table" style="width: 80%">
+                        <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">Tên</th>
+                            <th scope="col">Giá</th>
+                            <th scope="col" colspan="2">Mô tả</th>
+                            <th scope="col">Nhà cung cấp</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        foreach ($cart as $sp){
+                            ?>
+                            <tr>
+                                <td ><?php
+                                    echo $sp["name"] ;
+                                    ?></td>
+                                <td><?php
+                                    echo $sp["name"]
+                                    ?></td>
+                                <td><?php
+                                    echo $sp["gia"]." VND"
+                                    ?></td>
+                                <td colspan="2"><?php
+                                    echo $sp["mota"]
+                                    ?></td>
+                                <td><?php
+                                    echo $sp["ncc"]
+                                    ?></td>
+
+                            </tr>
+                            <?php
+                        }
+                        ?>
+
+                        </tbody>
+
+                    </table>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <table class="table" style="width: 80%">
         <thead>
         <tr>
@@ -92,7 +144,7 @@
             <th scope="col">Giá</th>
             <th scope="col" colspan="2">Mô tả</th>
             <th scope="col">Nhà cung cấp</th>
-            <th scope="col" colspan="2">Tool</th>
+            <th scope="col" colspan="3">Tool</th>
 
         </tr>
         </thead>
@@ -165,7 +217,14 @@
                 <td>
                     <form action="delete.php" method="post">
                         <input type="hidden" name="id" value="<?php echo $pro["id"] ?>">
-                        <button type="submit" class="btn btn-warning">Delete</button></form>
+                        <button type="submit" class="btn btn-warning">Delete</button>
+                    </form>
+                </td>
+                <td>
+                    <a href="mycart.php?id=<?php echo $pro["id"] ?>">
+                        <button class="btn btn-danger">Cart+</button>
+                    </a>
+
                 </td>
             </tr>
             <?php
